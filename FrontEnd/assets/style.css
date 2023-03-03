@@ -342,6 +342,13 @@ a, a:link, nav li {
 
 }
 
+.filter-btn.active{
+	border: 2px solid #FFFFFF;
+	background-color: #1D6154;
+	color: #FFFFFF;
+	cursor: pointer;
+}
+
 
 
 

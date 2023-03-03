@@ -8,7 +8,7 @@ const fetchWorks = async () => {
     });
 };
 
-  const worksDisplay = async () => {
+const worksDisplay = async () => {
   await fetchWorks();
 
   const displayWorks = (category = "all") => {
@@ -30,12 +30,21 @@ const fetchWorks = async () => {
         `
       )
       .join("");
+
+    // Ajoute la classe "active" au bouton sélectionné
+    const categoryButtons = document.querySelectorAll(".filter-btn");
+    categoryButtons.forEach((button) => {
+      if (button.dataset.category === category) {
+        button.classList.add("active");
+      } else {
+        button.classList.remove("active");
+      }
+    });
   };
 
-  
   const initMenu = () => {
     const menu = document.querySelector(".btn-wrapper");
-    menu.innerHTML = '<li><button class="filter-btn" data-category="all">Tous</button></li>';
+    menu.innerHTML = '<li><button class="filter-btn active" data-category="all">Tous</button></li>';
 
     fetch("http://localhost:5678/api/categories")
       .then((res) => res.json())
@@ -63,15 +72,4 @@ const fetchWorks = async () => {
   initMenu();
 };
 
-  
-
 worksDisplay();
-
-
-
-
-//
-
-
-//
-
