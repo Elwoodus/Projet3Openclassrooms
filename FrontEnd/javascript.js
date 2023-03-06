@@ -44,11 +44,17 @@ const worksDisplay = async () => {
 
   const initMenu = () => {
     const menu = document.querySelector(".btn-wrapper");
-    menu.innerHTML = '<li><button class="filter-btn active" data-category="all">Tous</button></li>';
-
+    menu.innerHTML = '';
+  
     fetch("http://localhost:5678/api/categories")
       .then((res) => res.json())
       .then((promise) => {
+        if (isLoggedIn) {
+          promise = promise.filter((category) => {
+            return category.name !== "Objets" && category.name !== "Appartements" && category.name !== "Hotels & restaurants";
+          });
+        }
+        
         menu.innerHTML += promise
           .map(
             (category) =>
@@ -56,7 +62,11 @@ const worksDisplay = async () => {
             `
           )
           .join("");
-
+  
+        if (!isLoggedIn) {
+          menu.innerHTML = `<li><button class="filter-btn" data-category="all">Tous</button></li>${menu.innerHTML}`;
+        }
+  
         const categoryButtons = document.querySelectorAll(".filter-btn");
         categoryButtons.forEach((button) => {
           button.addEventListener("click", () => {
@@ -64,7 +74,7 @@ const worksDisplay = async () => {
             displayWorks(category);
           });
         });
-
+  
         displayWorks();
       });
   };
@@ -87,7 +97,7 @@ function displayContent() {
 	if (isLoggedIn) {
 		document.querySelector('.loginlink').innerHTML = "logout";
 		document.querySelector('.header_admin_none').classList.replace("header_admin_none", "header_admin_visible");
-		// document.querySelector('.modifierAdd_none').classList.replace("modifierAdd_none", "modifierAdd_visible");
+	  document.querySelector('.modifierAdd_none').classList.replace("modifierAdd_none", "modifierAdd_visible");
     document.getElementById("loginId").addEventListener("click", myFunctionLogout);
 	  }
 	
@@ -107,6 +117,7 @@ function myFunctionLogout() {
 		sessionStorage.clear();
     location.assign("index.html");
 };
+
 		
 
 
