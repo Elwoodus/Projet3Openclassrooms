@@ -73,3 +73,40 @@ const worksDisplay = async () => {
 };
 
 worksDisplay();
+
+
+//Rend visible la bannière noir une fois connecté
+
+let isLoggedIn = sessionStorage.getItem("isLoggedIn");
+	if (sessionStorage.getItem("isLoggedIn") === null) {
+			isLoggedIn = false;
+	};
+
+function displayContent() {
+	
+	if (isLoggedIn) {
+		document.querySelector('.loginlink').innerHTML = "logout";
+		document.querySelector('.header_admin_none').classList.replace("header_admin_none", "header_admin_visible");
+		// document.querySelector('.modifierAdd_none').classList.replace("modifierAdd_none", "modifierAdd_visible");
+    document.getElementById("loginId").addEventListener("click", myFunctionLogout);
+	  }
+	
+	else {
+		document.querySelector('.loginlink').innerHTML = "login";
+		document.querySelector('.loginlink').addEventListener("click",()=>{
+      location.assign("login.html"); 
+
+    });
+	};
+};
+displayContent();
+  
+
+		
+function myFunctionLogout() {
+		sessionStorage.clear();
+    location.assign("index.html");
+};
+		
+
+

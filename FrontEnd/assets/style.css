@@ -181,6 +181,11 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
+input[type="submit"]:hover {
+
+	cursor: pointer;
+}
+
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
@@ -238,7 +243,8 @@ h2,
 	margin: 0px;
 	display: none ;
 }
-/*.header_admin_visible {
+/* test 2 */
+.header_admin_visible {
 	display: flex;
 	flex-direction: row;
 	align-content: center;
@@ -251,7 +257,9 @@ h2,
 	margin: 0px;
 	display: visible;
 }
-*/ 
+
+/* test 2 */
+ 
 
 .h2_header_admin{
 	color: white;
@@ -328,6 +336,7 @@ h2,
 
 a:hover, li:hover {
 	color: #B1663C;
+	cursor: pointer;
 }
 
 a, a:link, nav li {
@@ -340,6 +349,8 @@ a, a:link, nav li {
   
   	margin-bottom: 15px;
 
+	  text-align: center;
+
 }
 
 .filter-btn.active{
@@ -348,6 +359,39 @@ a, a:link, nav li {
 	color: #FFFFFF;
 	cursor: pointer;
 }
+
+#mdpp {
+	text-align: center;
+}
+
+ /* .modifierAdd_none {
+	display: flex;
+	flex-direction: row;
+	align-content: center;
+	align-items: flex-start;
+	justify-content: center;
+	margin-left: 31px;
+	width: auto;
+	height: 36px;
+	color: #1D6154;
+	display: none;
+}
+.modifierAdd_visible {
+	display: flex;
+	flex-direction: row;
+	align-content: center;
+	align-items: flex-start;
+	justify-content: center;
+	margin-left: 31px;
+	width: auto;
+	height: 36px;
+	color: #1D6154;
+	display: visible;
+} */
+
+
+
+  
 
 
 
