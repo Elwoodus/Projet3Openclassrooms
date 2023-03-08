@@ -104,19 +104,96 @@ function displayContent() {
 	else {
 		document.querySelector('.loginlink').innerHTML = "login";
 		document.querySelector('.loginlink').addEventListener("click",()=>{
-      location.assign("login.html"); 
+    location.assign("login.html"); 
 
     });
 	};
 };
 displayContent();
-  
 
-		
-function myFunctionLogout() {
+    function myFunctionLogout() {
 		sessionStorage.clear();
     location.assign("index.html");
 };
+
+//test
+
+const openModal = () => {
+  const modal = document.querySelector(".modal");
+  modal.style.display = "block";
+};
+
+const closeModal = () => {
+  const modal = document.querySelector(".modal");
+  modal.style.display = "none";
+};
+
+const addEventListeners = () => {
+  const modifyButtons = document.querySelectorAll(".modal-trigger");
+  modifyButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      openModal();
+    });
+  });
+
+  const closeButton = document.querySelector(".close-btn");
+  closeButton.addEventListener("click", () => {
+    closeModal();
+  });
+
+  window.addEventListener("click", (event) => {
+    const modal = document.querySelector(".modal");
+    if (event.target == modal) {
+      closeModal();
+    }
+  });
+};
+
+const createModal = () => {
+  const modal = `
+    <div class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Galerie photo</h2>
+        <div class="works-list">
+          ${worksData.map(
+              (work) => `
+                <div class="work">
+                  <img src="${work.imageUrl}" alt="${work.title}">
+                  <div class="work-info">
+                    <h3>${work.title}</h3>
+                    <p>${work.category.name}</p>
+                    <button class="delete-btn" data-id="${work.id}">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              
+                `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML("beforeend", modal);
+
+  const deleteButtons = document.querySelectorAll(".delete-btn");
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", async () => {
+      const workId = button.dataset.id;
+      await fetch(`http://localhost:5678/api/works/${workId}`, {
+        method: "DELETE",
+      });
+      worksData = worksData.filter((work) => work.id !== workId);
+      const worksList = document.querySelector(".works-list");
+      const workElement = button.closest(".work");
+      worksList.removeChild(workElement);
+    });
+  });
+};
+
+createModal();
+addEventListeners();
 
 		
 
