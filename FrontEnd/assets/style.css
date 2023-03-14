@@ -456,9 +456,78 @@ a, a:link, nav li {
 
 input[type="submit"] 
 
-input[type="submit"]:hover {
-  background-color: #45a049;
+
+
+/*test*/ 
+
+.modal-grid {
+	margin: 45px auto 25px auto;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-column-gap: 9px;
+	grid-row-gap: 30px;
+	/* margin-top: 3.125em; */
 }
+
+.add-photo-btn {
+	width: 240px;
+    margin : 2.3em auto 1.75em auto;
+}
+
+.delete-gallery-btn {
+	appearance: none;
+	width: fit-content;
+    margin: 0 auto;
+	background-color: transparent;
+	border: none;
+	color: #D65353;
+	font-family: 'Syne';
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.submit-btn {
+	cursor: pointer;
+	font-family: 'Syne';
+	font-weight: 700;
+    font-size: 14px;
+    color: white;
+	background-color: #1D6154;
+	border: 1px solid #1D6154;
+	border-radius: 60px ;
+	line-height: 19.2px;
+	padding: 0.6em 1.5em;
+}
+
+.modal-hr {
+	border: 1px solid #B3B3B3;
+    width: 100%;
+}
+
+.message {
+	position: fixed;
+    left: 50%;
+    z-index: 1;
+    transform: translate3d(-50%, 0, 0);
+	text-align: center;
+	padding: 0.3em 0.8em;
+	color: white;
+	border-radius: 60px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

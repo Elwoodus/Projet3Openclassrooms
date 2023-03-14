@@ -150,50 +150,13 @@ const addEventListeners = () => {
 };
 
 const createModal = () => {
-  const modal = `
-    <div class="modal">
-      <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <h2>Galerie photo</h2>
-        <div class="works-list">
-          ${worksData.map(
-              (work) => `
-                <div class="work">
-                  <img src="${work.imageUrl}" alt="${work.title}">
-                  <div class="work-info">
-                    <h3>${work.title}</h3>
-                    <p>${work.category.name}</p>
-                    <button class="delete-btn" data-id="${work.id}">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </div>
-                </div>
-              
-                `).join('')}
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.body.insertAdjacentHTML("beforeend", modal);
-
-  const deleteButtons = document.querySelectorAll(".delete-btn");
-  deleteButtons.forEach((button) => {
-    button.addEventListener("click", async () => {
-      const workId = button.dataset.id;
-      await fetch(`http://localhost:5678/api/works/${workId}`, {
-        method: "DELETE",
-      });
-      worksData = worksData.filter((work) => work.id !== workId);
-      const worksList = document.querySelector(".works-list");
-      const workElement = button.closest(".work");
-      worksList.removeChild(workElement);
-    });
-  });
+  const modal = ``;
 };
 
 createModal();
 addEventListeners();
+
+
 
 		
 
