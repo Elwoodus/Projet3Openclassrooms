@@ -399,6 +399,7 @@ a, a:link, nav li {
 #project_edit_location {
 	display: flex;
 	justify-content: center;
+	
 }
 
 #modal {
@@ -641,11 +642,11 @@ a, a:link, nav li {
 	width: 55%;
 }
 
-.visible {
+.visible  {
 	display: block;
   }
   
-  .none {
+  .none  {
 	display: none;
   }
 
