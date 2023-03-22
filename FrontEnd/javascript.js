@@ -1,5 +1,5 @@
 let worksData = [];
-// test
+
 
 //Fonction permettant de récupérer l'array du serveur dans "works"
 
@@ -32,20 +32,18 @@ async function getCategories() {
 
 // Définition d'une fonction asynchrone nommée worksDisplay
 const worksDisplay = async () => {
-  // Récupération des travaux en utilisant la fonction getWorks
+  // Appel de la fonction asynchrone getWorks et assignation de la valeur retournée à la variable worksData
   const worksData = await getWorks();
+  // Sélection de l'élément HTML ayant la classe "gallery" et assignation à la variable gallery
+  const gallery = document.querySelector(".gallery");
 
-  // Définition d'une fonction qui affiche les travaux en fonction d'une catégorie spécifiée
+  // Définition d'une fonction nommée displayWorks prenant en paramètre une chaîne de caractères et ayant une valeur par défaut de "all"
   const displayWorks = (category = "all") => {
-    // Récupération de l'élément HTML avec la classe "gallery"
-    const gallery = document.querySelector(".gallery");
-
-    // Filtrage des travaux en fonction de la catégorie sélectionnée
+    // Filtrage des éléments de worksData en fonction de la catégorie donnée en paramètre ou de tous les éléments si la catégorie est "all"
     const filteredWorks = worksData.filter(
       (work) => work.category.name === category || category === "all"
     );
-
-    // Affichage des travaux filtrés dans la galerie HTML
+    // Construction d'une chaîne de caractères HTML représentant les éléments filtrés et assignation à l'élément HTML gallery
     gallery.innerHTML = filteredWorks
       .map(
         (work) =>
@@ -55,61 +53,43 @@ const worksDisplay = async () => {
             <div id="${work.userId}"></div>
             <img src="${work.imageUrl}" crossOrigin="anonymous"/>
             <figcaption>${work.title}</figcaption>
-          </figure>
-        `
+          </figure>`
       )
       .join("");
-
-    // Ajout de la classe "active" au bouton sélectionné
-
-
-    // Récupération de tous les boutons ayant la classe "filter-btn"
+    // Sélection de tous les boutons ayant la classe "filter-btn" et assignation à la variable categoryButtons
     const categoryButtons = document.querySelectorAll(".filter-btn");
-
-    // Pour chaque bouton, on vérifie si sa catégorie correspond à la catégorie passée en argument
+    // Pour chaque bouton, ajoute ou supprime la classe "active" en fonction de la catégorie donnée en paramètre ou de tous les éléments si la catégorie est "all"
     categoryButtons.forEach((button) => {
       if (button.dataset.category === category) {
-        // Si oui, on ajoute la classe "active" au bouton
         button.classList.add("active");
       } else {
-        // Sinon, on retire la classe "active" du bouton
         button.classList.remove("active");
       }
     });
   };
 
-  // Définition d'une fonction pour initialiser le menu
+  // Définition d'une fonction nommée initMenu
   const initMenu = () => {
-    // Récupération de l'élément HTML avec la classe "btn-wrapper"
+    // Sélection de l'élément HTML ayant la classe "btn-wrapper" et assignation à la variable menu
     const menu = document.querySelector(".btn-wrapper");
-    // Effacement du contenu HTML de l'élément menu
+    // Suppression du contenu HTML de l'élément menu
     menu.innerHTML = '';
-
-    // Récupération des catégories en utilisant la fonction getCategories
+    // Appel de la fonction asynchrone getCategories
     getCategories()
       .then((categories) => {
-        // Si un utilisateur est connecté, filtrer certaines catégories
+        // Si l'utilisateur est connecté, filtre les catégories pour enlever celles ayant les noms "Objets", "Appartements" et "Hotels & restaurants"
         if (isLoggedIn) {
-          categories = categories.filter((category) => {
-            return category.name !== "Objets" && category.name !== "Appartements" && category.name !== "Hotels & restaurants";
-          });
-        }
+          categories = categories.filter((category) => category.name !== "Objets" && category.name !== "Appartements" && category.name !== "Hotels & restaurants");
+        }                               
+        // Construction d'une chaîne de caractères HTML représentant les boutons de catégories et assignation à la variable btnsHtml
+        const btnsHtml = categories.map((category) =>
+          `<li><button class="filter-btn" data-category="${category.name}">${category.name}</button></li>`
+        ).join("");
+        
+        const allBtnHtml = !isLoggedIn ? '<li><button class="filter-btn" data-category="all">Tous</button></li>' : '';
 
-        // Ajout des boutons de catégorie dans l'élément menu HTML
-        menu.innerHTML += categories
-          .map(
-            (category) =>
-              `<li><button class="filter-btn" data-category="${category.name}">${category.name}</button></li>
-            `
-          )
-          .join("");
+        menu.innerHTML = `${allBtnHtml}${btnsHtml}`;
 
-        // Ajout du bouton "Tous" si l'utilisateur n'est pas connecté
-        if (!isLoggedIn) {
-          menu.innerHTML = `<li><button class="filter-btn" data-category="all">Tous</button></li>${menu.innerHTML}`;
-        }
-
-        // Pour chaque bouton de catégorie, on attache un écouteur d'événement pour détecter lorsque l'utilisateur clique dessus
         const categoryButtons = document.querySelectorAll(".filter-btn");
         categoryButtons.forEach((button) => {
           button.addEventListener("click", () => {
@@ -118,12 +98,10 @@ const worksDisplay = async () => {
           });
         });
 
-        // Affichage des travaux par défaut
         displayWorks();
       });
   };
 
-  // Initialisation du menu
   initMenu();
 };
 
@@ -178,7 +156,7 @@ function myFunctionLogout() {
   location.assign("index.html");
 };
 
-//test
+
 
 //Fonction permettant la création d'une carte d'oeuvre
 function createCard(work, location) {
