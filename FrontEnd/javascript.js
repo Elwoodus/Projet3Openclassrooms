@@ -80,32 +80,38 @@ const worksDisplay = async () => {
         // Si l'utilisateur est connecté, filtre les catégories pour enlever celles ayant les noms "Objets", "Appartements" et "Hotels & restaurants"
         if (isLoggedIn) {
           categories = categories.filter((category) => category.name !== "Objets" && category.name !== "Appartements" && category.name !== "Hotels & restaurants");
-        }                               
+        }
         // Construction d'une chaîne de caractères HTML représentant les boutons de catégories et assignation à la variable btnsHtml
         const btnsHtml = categories.map((category) =>
           `<li><button class="filter-btn" data-category="${category.name}">${category.name}</button></li>`
         ).join("");
-        
+        // Si l'utilisateur n'est pas connecté, ajoute un bouton "Tous"
+        // Sinon, ne montre pas ce bouton
         const allBtnHtml = !isLoggedIn ? '<li><button class="filter-btn" data-category="all">Tous</button></li>' : '';
-
+        // Ajoute le HTML des boutons de catégorie au menu
+        // Utilise la chaîne de caractères générée précédemment pour les boutons de catégorie
         menu.innerHTML = `${allBtnHtml}${btnsHtml}`;
-
+        // Sélectionne tous les boutons de catégorie
         const categoryButtons = document.querySelectorAll(".filter-btn");
+        // Ajoute un écouteur d'événement "click" à chaque bouton de catégorie
+        // Lorsqu'un bouton est cliqué, appelle la fonction 'displayWorks' en lui passant la catégorie correspondante
         categoryButtons.forEach((button) => {
           button.addEventListener("click", () => {
             const category = button.dataset.category;
             displayWorks(category);
           });
         });
+        // Appelle la fonction 'displayWorks' sans argument pour afficher tous les travaux par défaut
 
         displayWorks();
       });
   };
+  //Cette fonction est appelée au chargement de la page et permet de mettre en place l'interface utilisateur en créant les boutons de filtre pour les catégories de travaux et en y ajoutant des écouteurs d'événements pour l'utilisateur.
 
   initMenu();
 };
 
-// Appel de la fonction worksDisplay
+// Appelle la fonction 'worksDisplay' pour démarrer l'application
 worksDisplay();
 
 
@@ -160,46 +166,69 @@ function myFunctionLogout() {
 
 //Fonction permettant la création d'une carte d'oeuvre
 function createCard(work, location) {
+
+  // Création d'un élément HTML <figure>
   let newFigure = document.createElement("figure");
+
+  // Création d'un élément HTML <img>
   let newImg = document.createElement("img");
+
+  // Création d'un élément HTML <figcaption>
   let newFigcaption = document.createElement("figcaption");
 
+  // Ajout des éléments <img> et <figcaption> à l'élément <figure>
   newFigure.appendChild(newImg);
   newFigure.appendChild(newFigcaption);
 
+  // Ajout d'un attribut "category" à l'élément <figure>, dont la valeur est l'ID de la catégorie du travail
   newFigure.setAttribute("category", work.categoryId);
 
+  // Ajout d'attributs à l'élément <img>
   newImg.setAttribute("crossorigin", "anonymous");
   newImg.setAttribute("src", work.imageUrl);
   newImg.setAttribute("alt", work.title);
 
+  // Si l'emplacement est la galerie modale
   if (location === document.querySelector("#modal .gallery")) {
+
+    // Ajout du texte "éditer" à l'élément <figcaption>
     newFigcaption.innerText = "éditer";
 
+    // Création d'un élément HTML <button> pour contenir l'icône de suppression
     let iconContainer = document.createElement("button");
+
+    // Création d'un élément HTML <i> pour l'icône de suppression
     let icon = document.createElement("i");
 
+    // Ajout de deux attributs à l'élément <button> pour stocker l'ID du travail
     iconContainer.setAttribute("class", "icon_container");
     iconContainer.setAttribute("workid", work.id);
+
+    // Ajout de deux classes à l'élément <i> pour afficher l'icône de suppression
     icon.setAttribute("class", "fa-solid fa-trash-can");
 
     //Création de l'évènement de suppression d'un work lors du clic sur l'icône poubelle
     iconContainer.addEventListener("click", async function (e) {
       e.preventDefault();
-
+    
+      // Affiche une fenêtre de confirmation pour demander à l'utilisateur s'il veut vraiment supprimer le travail.
       if (window.confirm("Voulez-vous vraiment supprimer ce travail ?")) {
+        // Si l'utilisateur clique sur OK dans la fenêtre de confirmation, supprime le travail en appelant la fonction deleteWorks() avec l'ID du travail.
         await deleteWorks(work.id);
+        // Recharge la page pour afficher la liste des travaux mise à jour.
         window.location.reload();
       }
     })
-
+    // Ajout du conteneur d'icône à l'élément figure.
     newFigure.appendChild(iconContainer);
+    // Ajout de l'icône à son conteneur.
     iconContainer.appendChild(icon);
   }
   else {
+    // Si aucune image n'est disponible pour le travail, ajoute simplement le titre du travail à la balise figcaption.
     newFigcaption.innerText = work.title;
   }
-
+  // Retourne l'élément figure créé, avec l'image et l'icône poubelle si disponibles, ou avec le titre du travail si aucune image n'est disponible.
   return newFigure;
 }
 
@@ -249,31 +278,38 @@ function createModifyingButton(button) {
   return button;
 }
 
-//Fonction permettant de créer une oeuvre sur l'API
+// Fonction permettant de créer une oeuvre sur l'API
 async function postWork(image, title, category) {
+  // Création d'un objet FormData
   let data = new FormData();
+  // Ajout des données (image, titre, catégorie) à l'objet FormData
   data.append("image", image);
   data.append("title", title);
   data.append("category", category);
 
+  // Envoi d'une requête POST à l'API pour créer une nouvelle oeuvre
   return await fetch("http://localhost:5678/api/works", {
     method: "POST",
     headers: {
+      // Ajout du token d'authentification à l'en-tête de la requête
       "Authorization": "Bearer " + sessionStorage.getItem("token")
     },
-    body: data
+    body: data // Ajout des données à la requête
   })
 }
 
-//Fonction permettant de supprimer une oeuvre de l'API
+// Fonction permettant de supprimer une oeuvre de l'API
 async function deleteWorks(id) {
+  // Envoi d'une requête DELETE à l'API pour supprimer l'oeuvre avec l'ID spécifié
   return fetch(`http://localhost:5678/api/works/${id}`, {
     method: "DELETE",
     headers: {
+      // Spécification du type de données acceptées par l'API
       "Accept": "application/json",
+      // Spécification du type de données envoyées dans le corps de la requête
       "Content-Type": "application/json",
+      // Ajout du token d'authentification à l'en-tête de la requête
       "Authorization": "Bearer " + sessionStorage.getItem("token")
-
     }
   });
 }
