@@ -128,10 +128,16 @@ function displayContent() {
     document.querySelector('.loginlink').innerHTML = "logout";
     document.querySelector('.header_admin_none').classList.replace("header_admin_none", "header_admin_visible");
     document.querySelector('.modifierAdd_none').classList.replace("modifierAdd_none", "modifierAdd_visible");
+    
 
     //Génération du premier bouton "Modifier"
     document
       .getElementById("image_edit_location")
+      .appendChild(createModifyingButton());
+
+    //Génération du troisième bouton "Modifier"
+    document
+      .getElementById("thirdbutton1")
       .appendChild(createModifyingButton());
 
     //Génération du deuxième bouton "Modifier"
@@ -314,7 +320,7 @@ async function deleteWorks(id) {
   });
 }
 
-//Création des galeries
+//Création des galeries , crée une galerie d'images à l'emplacement spécifié dans le document HTML.
 createGallery(document.querySelector("#portfolio .gallery"));
 createGallery(document.querySelector("#modal .gallery"));
 

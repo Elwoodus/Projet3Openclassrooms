@@ -29,7 +29,7 @@ let button = form.submit.addEventListener("click", (e) => {
     .then((data) => { // On traite la réponse de l'API
       var token = data.token; // On récupère le token d'authentification
       var isLoggedIn = true; // On définit la variable qui indique si l'utilisateur est connecté
-      if (data.message === "user not found") { // Si l'API retourne un message d'erreur
+      if (token == undefined) { // Si l'API retourne un message d'erreur
         form.errorMessage.innerHTML = "Erreur dans l’identifiant ou le mot de passe"; // On affiche un message d'erreur
       }
       else { // Si l'API retourne une réponse valide
