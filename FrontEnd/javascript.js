@@ -220,9 +220,15 @@ function createCard(work, location) {
       // Affiche une fenêtre de confirmation pour demander à l'utilisateur s'il veut vraiment supprimer le travail.
       if (window.confirm("Voulez-vous vraiment supprimer ce travail ?")) {
         // Si l'utilisateur clique sur OK dans la fenêtre de confirmation, supprime le travail en appelant la fonction deleteWorks() avec l'ID du travail.
-        await deleteWorks(work.id);
-        // Recharge la page pour afficher la liste des travaux mise à jour.
-        window.location.reload();
+        const reponseDelete = await deleteWorks(work.id);
+        //Ajout de createGallery dans la constante reponseDelete 
+        createGallery(document.querySelector("#portfolio .gallery"));
+        createGallery(document.querySelector("#modal .gallery"));
+       
+        console.log (reponseDelete)
+        
+        
+        
       }
     })
     // Ajout du conteneur d'icône à l'élément figure.
@@ -240,6 +246,7 @@ function createCard(work, location) {
 
 //Fonction permettant de générer la galerie
 async function createGallery(location) {
+  location.innerHTML = ""
   const items = await getWorks();
   let gallery = location;
 
@@ -247,6 +254,8 @@ async function createGallery(location) {
     gallery.appendChild(this.createCard(items[i], location));
   }
 }
+
+
 
 
 
@@ -446,8 +455,54 @@ document.getElementById("validate_post_work").addEventListener("click", async fu
     document.getElementById("category").options[document.getElementById("category").selectedIndex].getAttribute("category")
   );
 
-  window.location.reload();
+  //Ajout de createGallery dans awaitpostWork 
+  createGallery(document.querySelector("#portfolio .gallery"));
+  createGallery(document.querySelector("#modal .gallery"));
+
+  
 });
+
+// Ajoute un écouteur d'événements pour le changement de fichier dans le bouton "Ajouter une photo"
+addPhotoButton.addEventListener("change",function changefile(){
+  if (addPhotoButton.value !== null){ // Si un fichier est sélectionné, définir la variable imageExist sur true
+    imageExist = true
+  }else{ // Sinon, définir la variable imageExist sur false
+    imageExist = false
+  }
+  activeButton(imageExist, titleExist) 
+  console.log (addPhotoButton.value) 
+})
+
+// Récupère l'élément de titre et ajoute un écouteur d'événements pour l'entrée d'informations
+let titreAddValidation = document.getElementById('title');
+titreAddValidation.addEventListener("input",function changefile(){
+  if (titreAddValidation.value !== ""){ 
+    titleExist = true
+  }else{ 
+    titleExist = false
+  }
+  activeButton(imageExist, titleExist) // Appelle la fonction activeButton avec les variables imageExist et titleExist
+  console.log (titreAddValidation.value) // Affiche la valeur de l'entrée de titre dans la console
+})
+
+let imageExist = false // Initialise la variable imageExist à false
+let titleExist = false 
+
+// Définit la fonction activeButton pour activer ou désactiver le bouton "Valider" en fonction des variables imageExist et titleExist
+function activeButton(imageExist, titleExist){
+  if (imageExist && titleExist){ // Si les deux variables sont true, activer le bouton "Valider"
+    document.getElementById("validate_post_work").classList.remove("validate_button_off");
+    document.getElementById("validate_post_work").classList.add("validate_button_on");
+    document.getElementById("validate_post_work").removeAttribute("disabled")
+  }else{ // Sinon, désactiver le bouton "Valider"
+    document.getElementById("validate_post_work").classList.remove("validate_button_on");
+    document.getElementById("validate_post_work").classList.add("validate_button_off");
+    document.getElementById("validate_post_work").setAttribute("disabled", "" )
+  }
+}
+
+
+
 
 
 

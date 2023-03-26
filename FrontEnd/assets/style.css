@@ -172,18 +172,31 @@ margin: auto;
 
 input[type="submit"] {
 	color: white;
-	background-color: #1D6154;
 	font-weight: 400;
 	font-size: 1.15em;
 	font-family: 'Syne';
 	text-align: center;
 	border-radius: 60px;
 	padding: 10px;
+	cursor: pointer;
+}
+
+.validate_button_on{
+	background-color: #1D6154;
 	margin: 2em auto;
 	width: 180px;
 	border: #1D6154;
-	cursor: pointer;
+
 }
+
+.validate_button_off{
+	background-color: grey;
+	margin: 2em auto;
+	width: 180px;
+	border: grey;
+
+}
+
 
 input[type="submit"]:hover {
 
@@ -656,6 +669,30 @@ a, a:link, nav li {
 	width: 79px;
 
   }
+
+  .validate_post_work {
+	width: 237px;
+	height: 36px;
+	background: #A7A7A7;
+	border-radius: 60px;
+	font-family: 'Work Sans';
+	border: 0px;
+	cursor: pointer;
+	margin-top: 32px;
+	color: white;
+}
+
+.validate_post_work_ok {
+	width: 237px;
+	height: 36px;
+	background: #1D6154;
+	border-radius: 60px;
+	font-family: 'Work Sans';
+	border: 0px;
+	cursor: pointer;
+	margin-top: 32px;
+	color: white;
+}
 
 
 
